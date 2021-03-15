@@ -11,7 +11,11 @@ import numpy as np
 
 
 def Show(y):
-    # 参数为一个list
+    """
+    绘制交互图
+    :param y:
+    :return:
+    """
 
     len_y = len(y)
     x = range(len_y)
@@ -21,25 +25,34 @@ def Show(y):
     ax1 = fig.add_subplot(1, 1, 1)
 
     ax1.plot(x, y, color='blue')
-    line_x = ax1.plot(x, _y, color='skyblue')[0]
-    line_y = ax1.axvline(x=len_y - 1, color='skyblue')
+    line_x = ax1.plot(x, _y, color='green')[0]  # 数据标记横线
+    line_y = ax1.axvline(x=len_y - 1, color='skyblue')  # 数据标记纵线
 
-    ax1.set_title('aaa')
-    # 标签
-    text0 = plt.text(len_y - 1, y[-1], str(y[-1]), fontsize=10)
+    ax1.set_title('figMouseInteraction')
+    text0 = plt.text(len_y - 1, y[-1], str(y[-1]), fontsize=10)  # 主函数里的静态标签
 
-    def scroll(event):
-        axtemp = event.inaxes
-        x_min, x_max = axtemp.get_xlim()
-        fanwei_x = (x_max - x_min) / 10
-        if event.button == 'up':
-            axtemp.set(xlim=(x_min + fanwei_x, x_max - fanwei_x))
-        elif event.button == 'down':
-            axtemp.set(xlim=(x_min - fanwei_x, x_max + fanwei_x))
-        fig.canvas.draw_idle()
+    # def scroll(event):
+    #     """
+    #     这个函数好像没啥作用，注释掉之后的实现结果和存在的时候一样
+    #     :param event:
+    #     :return:
+    #     """
+    #     axtemp = event.inaxes
+    #     x_min, x_max = axtemp.get_xlim()
+    #     fanwei_x = (x_max - x_min) / 10
+    #     if event.button == 'up':
+    #         axtemp.set(xlim=(x_min + fanwei_x, x_max - fanwei_x))
+    #     elif event.button == 'down':
+    #         axtemp.set(xlim=(x_min - fanwei_x, x_max + fanwei_x))
+    #     fig.canvas.draw_idle()
 
-    # 这个函数实时更新图片的显示内容
+
     def motion(event):
+        """
+        这个函数实时更新图片的显示内容
+        :param event:
+        :return:
+        """
         try:
             temp = y[int(np.round(event.xdata))]
             for i in range(len_y):
@@ -54,9 +67,11 @@ def Show(y):
         except:
             pass
 
-    fig.canvas.mpl_connect('scroll_event', scroll)
+    # fig.canvas.mpl_connect('scroll_event', scroll)
     fig.canvas.mpl_connect('motion_notify_event', motion)
 
     plt.show()
 
-Show(np.random.random(100)*100)
+
+if __name__ == '__main__':
+    Show(np.random.random(100) * 100)
